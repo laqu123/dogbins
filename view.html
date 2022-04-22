@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>The Mass Tracker</title>
+  <link rel="icon" href="logo.png" type="image/x-icon">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css' rel='stylesheet' />
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    
+    .header{
+      margin-bottom: 10px;
+      position:fixed;
+      top:0em;
+    }
+    #map {
+      width: 98vw;
+      height: 80vh
+    }
+
+    .marker {
+      background-image: url('pointer.png');
+      background-size: cover;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+  }
+  .mapboxgl-popup {
+      max-width: 200px;
+      }
+
+  .mapboxgl-popup-content {
+      text-align: center;
+      font-family: 'Segoe UI', sans-serif;
+  }
+  .footer
+  {
+    position: fixed;
+    bottom: 0;
+  }
+  </style>
+</head>
+
+<body>
+
+  <header class="text-gray-500 bg-gray-900 body-font">
+    <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
+      <a href = "index.html" class="flex title-font font-medium items-center text-white mb-4 md:mb-0">
+        <img src="logo.png" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-red-500 rounded-full" viewBox="0 0 24 24">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+        </svg>
+        <span class="ml-3 text-xl">The Mass Tracker</span>
+      </a>
+      <nav class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-700	flex flex-wrap items-center text-base justify-center">
+        <a href="index.html" class="mr-5 hover:text-white">Home</a>
+        <a href="view.html" class="mr-5 hover:text-white">View Cases</a>
+        <a href="about.html" class="mr-5 hover:text-white">About Us</a>
+        <a href="submit.html" class="mr-5 hover:text-white">Contribute</a>
+      </nav>
+      <button onclick="window.location.href='checkup.html'" class="inline-flex items-center text-white bg-red-500 border-0 py-1 px-3 focus:outline-none hover:bg-red-600 rounded text-base mt-4 md:mt-0">Should I get a checkup?
+        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <div id='map'>
+
+  <script>
+  
+  mapboxgl.accessToken = 'pk.eyJ1Ijoic3VoaXRhZ2Fyd2FsIiwiYSI6ImNrYm9scjJndTIyYWUyc2swY3dmMThieW0ifQ.h8yF6VGXulGAwSEQFbn3gw';
+  
+  var map = new mapboxgl.Map({
+    container: 'map',
+    style: 'mapbox://styles/suhitagarwal/ckbolwlus1sax1io0egg5m9e6',
+    center: [-111.884895, 32.798800],
+    zoom: 7.82,
+  });
+  
+  var geojson = {
+    type: 'FeatureCollection',
+    features: [
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-112.2059,33.2601]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Avondale,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-112.5838,33.3703]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Buckeye,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-112.5838,33.3062]
+      },
+      properties: {
+        title: 'Location Risk Level: Medium',
+        subtitle: 'Last Updated: 6/27/2020',
+        description: 'Chandler,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-112.3246,33.6131]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'El Mirage,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-118.2551,34.1425]
+      },
+      properties: {
+        title: 'Location Risk Level: Medium',
+        subtitle: 'Last Updated: 6/27/2020',
+        description: 'Glendale,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-112.3579,33.4934]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Litchfield Park,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.8315,33.4152]
+      },
+      properties: {
+        title: 'Location Risk Level: High',
+        subtitle: 'Last Updated: 6/27/2020',
+        description: 'Mesa,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-112.2374,33.5806]
+      },
+      properties: {
+        title: 'Location Risk Level: Medium',
+        subtitle: 'Last Updated: 6/27/2020',
+        description: 'Peoria,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-112.0740,33.4484]
+      },
+      properties: {
+        title: 'Location Risk Level: High',
+        subtitle: 'Last Updated: 6/27/2020',
+        description: 'Phoenix,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.9261,33.4942]
+      },
+      properties: {
+        title: 'Location Risk Level: Medium',
+        subtitle: 'Last Updated: 6/27/2020',
+        description: 'Scottsdale,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-112.3679,33.6292]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Surprise,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.9400,33.4255]
+      },
+      properties: {
+        title: 'Location Risk Level: High',
+        subtitle: 'Last Updated: 6/27/2020',
+        description: 'Tempe,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-112.2593,33.4500]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Tolleson,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-112.8607,32.3717]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Ajo,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.3315,31.5773]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Arivaca,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-110.9951,32.3234]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Casas Adobes,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-110.9951,32.5001]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Catalina,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-110.9187,32.2979]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Catalina Foothills,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.0121,32.2944]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Flowing Wells,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-110.9937,31.8543]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Green Valley,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-112.3577,33.4353]
+      },
+      properties: {
+        title: 'lol',
+        subtitle: 'got yo ass',
+        description: 'Thorin'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.2224,32.4364]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Marana,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-110.9665,32.3909]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Oro Valley,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.2462,32.3459]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Picture Rocks,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-110.9556,31.9576]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Sahuarita,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-110.9684,32.1955]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'South Tucson,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-110.7373,32.2517]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Tanque Verde,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-110.9747,32.2226]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Tucson,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-110.7009,32.0005]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Vail,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.5496,33.4150]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Apache Junction,AZ'
+      }
+    },{
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.6710,32.7559]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Arizona City,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.7734,32.9110]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Casa Grande,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.5176,32.9778]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Coolidge,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.5548,32.7559]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Eloy,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.3873,33.0315]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Florence,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.4500,33.3593]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Gold Canyon,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-112.3577,33.4353]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Goodyear,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-110.9107,33.0570]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Kearny,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-112.0476,33.0581]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Maricopa,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-110.7709,32.6109]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Oracle,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.4987,32.7131]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Picacho,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.3290,32.5731]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Red Rock,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-110.8835,32.5355]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Saddlebrooke,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.5468,33.1773]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'San Tan Valley,AZ'
+      }
+    },
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [-111.0962,33.2939]
+      },
+      properties: {
+        title: 'Location Risk Level:',
+        subtitle: 'Last Updated:',
+        description: 'Superior,AZ'
+      }
+    },
+    ]
+  };
+  geojson.features.forEach(function(marker) {
+  
+  // create a HTML element for each feature
+  var el = document.createElement('div');
+  el.className = 'marker';
+  
+  // make a marker for each feature and add to the map
+  new mapboxgl.Marker(el)
+    .setLngLat(marker.geometry.coordinates)
+    .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+      .setHTML('<h2>' + marker.properties.title + '</h2><h3>' + marker.properties.subtitle + '</h3><p>' + marker.properties.description + '</p>'))
+    .addTo(map);
+  });
+  
+  </script>
+  </div>
+  <footer class="text-gray-500 bg-gray-900 body-font">
+    <div class="container px-5 py-24 mx-auto flex md:items-center lg:items-start md:flex-row md:flex-no-wrap flex-wrap flex-col">
+      <div class="w-64 flex-shrink-0 md:mx-0 mx-auto text-center md:text-left">
+        <a class="flex title-font font-medium items-center md:justify-start justify-center text-white">
+          <img src="logo.png" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-10 h-10 text-white p-2 bg-red-500 rounded-full" viewBox="0 0 24 24">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+          </svg>
+          <span class="ml-3 text-xl">The Mass Tracker</span>
+        </a>
+        <p class="mt-2 text-sm text-gray-700">Get out relaxed with Mass Tracker</p>
+      </div>
+      <div class="flex-grow flex flex-wrap md:pl-20 -mb-10 md:mt-0 mt-10 md:text-left text-center">
+        <div class="lg:w-1/5 md:w-1/2 w-full px-4">
+          <a href="index.html"><h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">HOME</h2></a>
+        </div>
+        <div class="lg:w-1/5 md:w-1/2 w-full px-4">
+          <a href="about.html"><h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">ABOUT</h2></a>
+        </div>
+        <div class="lg:w-1/5 md:w-1/2 w-full px-4">
+          <a href="view.html"><h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">VIEW</h2></a>
+        </div>
+        <div class="lg:w-1/5 md:w-1/2 w-full px-4">
+          <a href="submit.html"><h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">SUBMIT</h2></a>
+        </div>
+        <div class="lg:w-1/5 md:w-1/2 w-full px-4">
+          <a href="checkup.html"><h2 class="title-font font-medium text-white tracking-widest text-sm mb-3">SELF-ASSESS</h2></a>
+        </div>
+      </div>
+    </div>
+    <div class="bg-gray-800">
+      <div class="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
+        <p class="text-gray-600 text-sm text-center sm:text-left">© 2020 —
+          <a href="https://twitter.com" rel="noopener noreferrer" class="text-gray-500 ml-1" target="_blank">@masstracker</a>
+        </p>
+        <span class="inline-flex sm:ml-auto sm:mt-0 mt-2 justify-center sm:justify-start">
+          <a href="https://bit.ly/2YBqIo6" class="text-gray-600">
+            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+              <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path>
+            </svg>
+          </a>
+          <a href="https://bit.ly/2ZfwElV" class="ml-3 text-gray-600">
+            <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+              <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"></path>
+            </svg>
+          </a>
+          <a href="https://bit.ly/2VpavjM" class="ml-3 text-gray-600">
+            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+              <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37zm1.5-4.87h.01"></path>
+            </svg>
+          </a>
+          <a href="https://bit.ly/2VpamNg" class="ml-3 text-gray-600">
+            <svg fill="currentColor" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="0" class="w-5 h-5" viewBox="0 0 24 24">
+              <path stroke="none" d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"></path>
+              <circle cx="4" cy="4" r="2" stroke="none"></circle>
+            </svg>
+          </a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
